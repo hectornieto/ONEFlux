@@ -98,7 +98,7 @@ def load_output(filename, delimiter=',', skip_header=1):
     array_day = numpy.empty(len(data), dtype='i4')
     array_hour = numpy.empty(len(data), dtype='i4')
     array_minute = numpy.empty(len(data), dtype='i4')
-    it = numpy.nditer(new_data['timestamp_end'], flags=['f_index'])
+    it = numpy.nditer(new_data['timestamp_start'], flags=['f_index'])
     while not it.finished:
         timestamp = datetime.strptime(str(it.value), "%Y%m%d%H%M")
         array_year[it.index] = timestamp.year
@@ -115,7 +115,7 @@ def load_output(filename, delimiter=',', skip_header=1):
     new_data['minute'][:] = array_minute
     year_array = numpy.unique(ar=new_data['year'])
 
-    _log.debug("Finished loading timestamps: first(END)={f}, last(END)={l}, years={y}".format(f=new_data['timestamp_end'][0], l=new_data['timestamp_end'][-1], y=list(year_array)))
+    _log.debug("Finished loading timestamps: first(END)={f}, last(END)={l}, years={y}".format(f=new_data['timestamp_start'][0], l=new_data['timestamp_start'][-1], y=list(year_array)))
 
     # need to remove last entry when using end-of-averaging period convention
     year_list = sorted([int(i) for i in year_array])[:-1]

@@ -183,17 +183,17 @@ def partitioning_dt(datadir, siteid, sitedir, prod_to_compare, perc_to_compare, 
                 year_mask_meteo = (whole_dataset_meteo['year'] == year)
 
                 # account for first entry being from previous year
-                if iteration == 0:
-                    _log.debug("First site-year available ({y}), removing first midnight entry from meteo only".format(y=year))
-                    first_meteo = numpy.where(year_mask_meteo == 1)[0][0]
-                    first_nee = None
-                    year_mask_meteo[first_meteo] = 0
-                else:
-                    _log.debug("Regular site-year ({y}), removing first midnight entry from meteo and nee".format(y=year))
-                    first_meteo = numpy.where(year_mask_meteo == 1)[0][0]
-                    first_nee = numpy.where(year_mask_nee == 1)[0][0]
-                    year_mask_meteo[first_meteo] = 0
-                    year_mask_nee[first_nee] = 0
+                # if iteration == 0:
+                #     _log.debug("First site-year available ({y}), removing first midnight entry from meteo only".format(y=year))
+                #     first_meteo = numpy.where(year_mask_meteo == 1)[0][0]
+                #     first_nee = None
+                #     year_mask_meteo[first_meteo] = 0
+                # else:
+                _log.debug("Regular site-year ({y}), removing first midnight entry from meteo and nee".format(y=year))
+                first_meteo = numpy.where(year_mask_meteo == 1)[0][0]
+                first_nee = numpy.where(year_mask_nee == 1)[0][0]
+                year_mask_meteo[first_meteo] = 0
+                year_mask_nee[first_nee] = 0
 
                 # account for last entry being from next year
                 _log.debug("Site-year ({y}), adding first midnight entry from next year for meteo and nee".format(y=year))
@@ -202,8 +202,8 @@ def partitioning_dt(datadir, siteid, sitedir, prod_to_compare, perc_to_compare, 
                 year_mask_meteo[last_meteo] = 1
                 year_mask_nee[last_nee] = 1
 
-                _log.debug("Site-year {y}: first NEE '{tn}' and first meteo '{tm}'".format(y=year, tn=whole_dataset_nee[year_mask_nee][0]['timestamp_end'], tm=whole_dataset_meteo[year_mask_meteo][0]['timestamp_end']))
-                _log.debug("Site-year {y}:  last NEE '{tn}' and  last meteo '{tm}'".format(y=year, tn=whole_dataset_nee[year_mask_nee][-1]['timestamp_end'], tm=whole_dataset_meteo[year_mask_meteo][-1]['timestamp_end']))
+                _log.debug("Site-year {y}: first NEE '{tn}' and first meteo '{tm}'".format(y=year, tn=whole_dataset_nee[year_mask_nee][0]['timestamp_start'], tm=whole_dataset_meteo[year_mask_meteo][0]['timestamp_start']))
+                _log.debug("Site-year {y}:  last NEE '{tn}' and  last meteo '{tm}'".format(y=year, tn=whole_dataset_nee[year_mask_nee][-1]['timestamp_start'], tm=whole_dataset_meteo[year_mask_meteo][-1]['timestamp_start']))
 
                 if numpy.sum(year_mask_nee) != numpy.sum(year_mask_meteo):
                     msg = "Incompatible array sizes (nee={n}, meteo={m}) for year '{y}' while processing '{f}'".format(y=year, f=output_filename, n=numpy.sum(year_mask_nee), m=numpy.sum(year_mask_meteo))
@@ -637,11 +637,11 @@ def compute_flux(data, params, dt_output_dir, site_id, ustar_type, percentile_nu
                 #    exit()
             '''
 
-        #### If there is no window covering this data-point "j", then exit.
-        else: # TODO: investigate and replace behavior (same as broken opt error?)
-            msg = "DT EXIT EXCEPTION: no window covering data point j"
-            _log.critical(msg)
-            raise ONEFluxPartitionError(msg)
+        # #### If there is no window covering this data-point "j", then exit.
+        # else: # TODO: investigate and replace behavior (same as broken opt error?)
+        #     msg = "DT EXIT EXCEPTION: no window covering data point j"
+        #     _log.critical(msg)
+        #     raise ONEFluxPartitionError(msg)
     #### end "for j"
 
     #print("Reco")
