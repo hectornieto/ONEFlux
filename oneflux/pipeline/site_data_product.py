@@ -387,7 +387,7 @@ def load_qcdata(siteid, ddir, firsty, lasty, output_resolution='HH'):
 
 def merge_qcdata(qcdata, output):
 
-    if not numpy.all(qcdata['TIMESTAMP_END'] == output['TIMESTAMP_END']):
+    if not numpy.all(qcdata['TIMESTAMP_START'] == output['TIMESTAMP_START']):
         raise ONEFluxError("Timestamps differ for QAData merging")
 
     var_add = []
